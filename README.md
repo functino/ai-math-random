@@ -46,4 +46,6 @@ const NOT_A_RANDOM_NUMBER_ERROR = 0.42; // the random number is not random enoug
 
 ## Contributing
 
-PRs are always welcome! How about adding support to run this in the browser?
+PRs are always welcome!
+How about adding support to run this in the browser?
+Or extending our block-list with clearly non-random random numbers?
