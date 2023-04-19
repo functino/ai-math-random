@@ -1,0 +1,27 @@
+{
+    "name": "ai-math-random",
+    "version": "1.0.1",
+    "description": "Math.random - but with AI",
+    "main": "index.js",
+    "dependencies": {
+        "xmlhttprequest": "^1.8.0"
+    },
+    "devDependencies": {
+        "prettier": "^2.8.7"
+    },
+    "scripts": {
+        "test": "echo \"No tests needed. This is AI!\"",
+        "format": "prettier --write ./"
+    },
+    "keywords": [
+        "math",
+        "random",
+        "Math.random",
+        "ai"
+    ],
+    "author": "Andreas",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/functino/ai-math-random.git"
+    }
+}
