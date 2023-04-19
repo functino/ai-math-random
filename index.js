@@ -12,6 +12,8 @@ const randomPrompt = 'Give me a random number like you where Math.random. Give m
 const securePrompt =
     'Can Math.random in javascript return the value :value? Reply with the exact text YES if yes and with NO if no. Do not add any additional characters. No dot in the end.';
 
+let temperature = 0.7;
+
 const settings = {
     secureMode: false,
     debugMode: false,
@@ -34,7 +36,7 @@ function useAiMagic(prompt) {
     const body = {
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
+        temperature,
     };
     xhr.send(JSON.stringify(body));
     const res = JSON.parse(xhr.responseText);
@@ -58,6 +60,8 @@ function random() {
                 return NOT_A_RANDOM_NUMBER_ERROR;
             }
         }
+        // by randomly setting the temperature we can enhance randomness even more!
+        temperature = number;
         return parseFloat(number);
     } catch (err) {
         if (settings.debugMode) {

@@ -1,6 +1,6 @@
 {
     "name": "ai-math-random",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Math.random - but with AI",
     "main": "index.js",
     "dependencies": {
