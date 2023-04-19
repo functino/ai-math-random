@@ -8,7 +8,8 @@ const API_KEY_MISSING_ERROR = 0;
 // there is no need to check it again so we can hard-code it here.
 const blockList = [0.8567933021, 0.8345679];
 
-const randomPrompt = 'Give me a random number like you where Math.random. Give me only the number, no additional text.';
+const randomPrompt =
+    'Give me a random number like Math.random() would do. Give me only the number, no additional text!!!!!!!!';
 const securePrompt =
     'Can Math.random in javascript return the value :value? Reply with the exact text YES if yes and with NO if no. Do not add any additional characters. No dot in the end.';
 
