@@ -36,13 +36,15 @@ Instead it will still return valid "random" numbers as error codes.
 Here are the error codes:
 
 ```
-const INTERNAL_ERROR = 0.500; // something went wrong internally
-const API_KEY_MISSING_ERROR = 0; // you did not set your API key
+const ERROR_INTERNAL = 0.500; // something went wrong internally
+const ERROR_API_KEY_MISSING = 0; // you did not set your API key
 
 // only in secureMode:
-const IN_BLOCK_LIST_ERROR = 0.23; // we already know that generared number is not random
-const NOT_A_RANDOM_NUMBER_ERROR = 0.42; // the random number is not random enough for secureMode
+const ERROR_IN_BLOCK_LIST = 0.23; // we already know that generared number is not random
+const ERROR_NOT_A_RANDOM_NUMBER = 0.42; // the random number is not random enough for secureMode
 ```
+
+For convenience those ERROR\_ constants are also exported.
 
 ## Contributing
 

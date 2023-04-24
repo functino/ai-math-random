@@ -1,8 +1,9 @@
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-const INTERNAL_ERROR = 0.5;
-const NOT_A_RANDOM_NUMBER_ERROR = 0.42;
-const IN_BLOCK_LIST_ERROR = 0.23;
-const API_KEY_MISSING_ERROR = 0;
+
+const ERROR_INTERNAL = 0.5;
+const ERROR_NOT_A_RANDOM_NUMBER = 0.42;
+const ERROR_IN_BLOCK_LIST = 0.23;
+const ERROR_API_KEY_MISSING = 0;
 
 // this is a list of numbers where chatGPT already told us that it is not a valid random number
 // there is no need to check it again so we can hard-code it here.
@@ -27,7 +28,7 @@ function useAiMagic(prompt) {
     }
     if (!settings.apiKey) {
         console.log('API key is missing.');
-        return API_KEY_MISSING_ERROR;
+        return ERROR_API_KEY_MISSING;
     }
 
     const xhr = new XMLHttpRequest();
@@ -59,10 +60,10 @@ function random() {
 
         if (settings.secureMode) {
             if (blockList.includes(number)) {
-                return IN_BLOCK_LIST_ERROR;
+                return ERROR_IN_BLOCK_LIST;
             }
             if (useAiMagic(securePrompt.replace(':value', number)) === 'NO') {
-                return NOT_A_RANDOM_NUMBER_ERROR;
+                return ERROR_NOT_A_RANDOM_NUMBER;
             }
         }
         // by randomly setting the temperature we can enhance randomness even more!
@@ -72,7 +73,7 @@ function random() {
         if (settings.debugMode) {
             console.error(err);
         }
-        return INTERNAL_ERROR;
+        return ERROR_INTERNAL;
     }
 }
 let origMathRandom = Math.random;
@@ -89,4 +90,12 @@ function reset() {
     Math.random = origMathRandom;
 }
 
-module.exports = { setup, reset, random };
+module.exports = {
+    setup,
+    reset,
+    random,
+    ERROR_INTERNAL,
+    ERROR_NOT_A_RANDOM_NUMBER,
+    ERROR_IN_BLOCK_LIST,
+    ERROR_API_KEY_MISSING,
+};
