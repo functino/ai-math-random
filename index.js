@@ -40,6 +40,10 @@ function useAiMagic(prompt) {
         temperature,
     };
     xhr.send(JSON.stringify(body));
+
+    if (xhr.status !== 200) {
+        throw new Error('Non 200 status code received. ResponseTest: ' + xhr.responseText);
+    }
     const res = JSON.parse(xhr.responseText);
 
     if (settings.debugMode) {
