@@ -17,7 +17,8 @@
         "math",
         "random",
         "Math.random",
-        "ai"
+        "ai",
+        "chatGPT"
     ],
     "author": "Andreas",
     "repository": {
