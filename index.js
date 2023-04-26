@@ -1,4 +1,5 @@
-const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+var spawn = require('child_process').spawn;
+var fs = require('fs');
 
 const ERROR_INTERNAL = 0.5;
 const ERROR_NOT_A_RANDOM_NUMBER = 0.42;
@@ -31,21 +32,55 @@ function useAiMagic(prompt) {
         return ERROR_API_KEY_MISSING;
     }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.openai.com/v1/chat/completions', false);
-    xhr.setRequestHeader('Authorization', 'Bearer ' + settings.apiKey);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    const contentFile = '.node-xmlhttprequest-content-' + process.pid;
+    const syncFile = '.node-xmlhttprequest-sync-' + process.pid;
+
+    fs.writeFileSync(syncFile, '', 'utf8');
+    const execString = `const https = require('https');
+
+    const options = {
+        hostname: 'api.openai.com',
+        path: '/v1/chat/completions',
+        method: 'POST',
+        headers: {
+            Authorization: 'Bearer ${settings.apiKey}',
+            'Content-Type': 'application/json',
+        },
+    };
+
     const body = {
         model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-        temperature,
+        messages: [{ role: 'user', content: ${JSON.stringify(prompt)} }],
+        temperature: ${temperature},
     };
-    xhr.send(JSON.stringify(body));
 
-    if (xhr.status !== 200) {
-        throw new Error('Non 200 status code received. ResponseTest: ' + xhr.responseText);
+    const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+        res.on('end', () => {
+            fs.writeFileSync("${contentFile}", data, "utf8");
+            fs.unlinkSync("${syncFile}");
+        });
+    });
+
+    req.on('error', (error) => {
+        fs.writeFileSync("${contentFile}", JSON.stringify(error), "utf8");
+        fs.unlinkSync("${syncFile}");
+    });
+
+    req.write(JSON.stringify(body));
+    req.end();`;
+
+    const syncProc = spawn(process.argv[0], ['-e', execString]);
+    while (fs.existsSync(syncFile)) {
+        // Wait until the sync file is deleted
     }
-    const res = JSON.parse(xhr.responseText);
+    const res = JSON.parse(fs.readFileSync(contentFile, 'utf8'));
+    fs.unlinkSync(contentFile);
+    // Kill the child process once the file has data
+    syncProc.stdin.end();
 
     if (settings.debugMode) {
         console.log('Response: ' + JSON.stringify(res, null, 4));

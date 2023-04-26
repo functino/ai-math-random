@@ -3,9 +3,6 @@
     "version": "1.2.0",
     "description": "Math.random - but with AI",
     "main": "index.js",
-    "dependencies": {
-        "xmlhttprequest": "^1.8.0"
-    },
     "devDependencies": {
         "prettier": "^2.8.7"
     },
